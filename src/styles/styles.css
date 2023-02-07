@@ -1,0 +1,16 @@
+.entrada{
+    display: inline-block;
+    width: 85%;
+    height: 30px;
+    -webkit-border-radius: 25px;
+    -moz-border-radius: 25px;
+    border-radius: 25px;
+    border: 0;
+    font-size: 18px;
+    padding: 5px;
+    margin: 7px 15px;
+    text-align: center;
+}
+.entrada:focus{
+    outline-color: none;
+}

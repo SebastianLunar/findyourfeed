@@ -52,17 +52,15 @@ const Login = () => {
             <CONTENT>
                 <h1>Sign In</h1>
                 <form action="" onSubmit={handleSubmit}>
-                    <Input type="email" name="email" placeholder="Email" value={formValue.email} onChange={handleChange} style={{marginBottom: "10px"}} />
-                    <Input type="password" name="password" placeholder="Password" value={formValue.password} onChange={handleChange} style={{marginBottom: "2rem"}} />
+                    <Input type="email" name="email" placeholder="Email" value={formValue.email} onChange={handleChange} style={{ marginBottom: "10px" }} />
+                    <Input type="password" name="password" placeholder="Password" value={formValue.password} onChange={handleChange} style={{ marginBottom: "2rem" }} />
                     <Boton>Sign In</Boton>
                     <h6>¿Forgot your password?</h6>
                 </form>
 
                 <div>
                     <h4>Sign in with</h4>
-                    <SOCIAL>
-                        <img src={icong} style={{cursor: "pointer"}} alt="" onClick={() => dispatch(loginGoogle(), navigate('/home'))} />
-                    </SOCIAL>
+                    <img src={icong} style={{ cursor: "pointer" }} alt="" onClick={() => dispatch(loginGoogle(), navigate('/home'))} />
                 </div>
 
                 <div>
