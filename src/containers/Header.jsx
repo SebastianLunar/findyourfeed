@@ -1,14 +1,16 @@
 import { Flex, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { Rating } from '@material-ui/lab'
-import React, { useEffect, useState } from 'react'
-import { BiChevronDown, BiCurrentLocation, BiLogOut, BiSearch, BiStar } from 'react-icons/bi'
+import React, { useState } from 'react'
+import { BiChevronDown, BiCurrentLocation, BiHistory, BiLogOut, BiSearch, BiStar } from 'react-icons/bi'
 import axios from 'axios'
 import { useDispatch } from 'react-redux'
 import { actionLogoutAsync } from '../redux/actions/loginActions'
+import History from './History'
 
 const Header = ({ setRatings, setCoordinates }) => {
     const dispatch = useDispatch()
     const [busqueda, setBusqueda] = useState("")
+    const [busquedas, setBusquedas] = useState([])
 
     const handleInputChange = ({ target }) => {
         setBusqueda(target.value)
@@ -25,10 +27,9 @@ const Header = ({ setRatings, setCoordinates }) => {
                 'X-RapidAPI-Host': 'opentripmap-places-v1.p.rapidapi.com'
             }
         };
-
         axios.request(options).then(function ({ data }) {
-            console.log(data);
             setCoordinates({ lat: data.lat, lon: data.lon })
+            busquedas.push(data)
         }).catch(function (error) {
             console.error(error);
         });
@@ -143,6 +144,29 @@ const Header = ({ setRatings, setCoordinates }) => {
                 <BiLogOut fontSize={25}
                     onClick={() => dispatch(actionLogoutAsync())}
                 />
+            </Flex>
+        </Flex>
+        <Flex
+            direction={"column"}
+            bg={"whiteAlpha.900"}
+            width={"25vw"}
+            height="50vh"
+            position={"fixed"}
+            right={0}
+            bottom={0}
+            zIndex={1}
+            overflow="hidden"
+            px={2}
+        >
+            <Flex justifyContent={"center"} alignItems={"center"} py={2}>
+                <BiHistory fontSize={25} />
+                <Text fontSize={20} fontWeight={500} color={"gray.700"}>
+                    Search history
+                </Text>
+            </Flex>
+            <Flex flex={1} overflowY={"scroll"} direction={"column"}>
+                {busquedas &&
+                    busquedas.map((busqueda, i) => <History busqueda={busqueda} key={i} />)}
             </Flex>
         </Flex>
     </Flex>
