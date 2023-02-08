@@ -1,14 +1,19 @@
 import { Flex, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { Rating } from '@material-ui/lab'
 import React, { useState } from 'react'
-import { BiChevronDown, BiSearch, BiStar } from 'react-icons/bi'
-import { GetCity } from '../helpers/GetCity'
+import { BiChevronDown, BiCurrentLocation, BiLogOut, BiSearch, BiStar } from 'react-icons/bi'
 import axios from 'axios'
 
 const url = "https://opentripmap-places-v1.p.rapidapi.com/en/places/geoname";
 
 const Header = ({ setRatings, setCoordinates }) => {
     const [busqueda, setBusqueda] = useState("")
+
+    const handleLocation = () => {
+        // navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+        //     setCoordinates({ lat: latitude, lon: longitude })
+        // })
+    }
 
     const handleInputChange = ({ target }) => {
         setBusqueda(target.value)
@@ -26,7 +31,7 @@ const Header = ({ setRatings, setCoordinates }) => {
             }
         };
 
-        axios.request(options).then(function ({data}) {
+        axios.request(options).then(function ({ data }) {
             console.log(data);
             setCoordinates({ lat: data.lat, lon: data.lon })
         }).catch(function (error) {
@@ -55,7 +60,7 @@ const Header = ({ setRatings, setCoordinates }) => {
             <form onSubmit={handleSubmit}>
                 <Input
                     type="text"
-                    placeholder="Search for"
+                    placeholder="Type your city"
                     variant={'filled'}
                     fontSize={18}
                     bg={'white'}
@@ -84,77 +89,55 @@ const Header = ({ setRatings, setCoordinates }) => {
                 cursor={"pointer"}
             >
                 <Menu>
+                    <BiCurrentLocation fontSize={25} onClick={handleLocation()} />
+                    <MenuButton mx={2} transitions={'all 0.2s'} borderRadius={'md'} onClick={handleLocation()}>
+                        Track my Location
+                    </MenuButton>
+
                     <BiStar fontSize={25} />
                     <MenuButton mx={2} transitions={'all 0.2s'} borderRadius={'md'}>
                         Choose Ratings
                     </MenuButton>
 
                     <MenuList>
-                        <MenuItem
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent="space-around"
-                            onClick={() => setRatings("")}
-                        >
+                        <MenuItem display={"flex"} alignItems={"center"} justifyContent="space-around" onClick={() => setRatings("")}>
                             <Text fontSize={20} fontWeight={500} color={"gray.700"}>
                                 All Rates
                             </Text>
                         </MenuItem>
 
-                        <MenuItem
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent="space-around"
-                            onClick={() => setRatings(2)}
-                        >
+                        <MenuItem display={"flex"} alignItems={"center"} justifyContent="space-around" onClick={() => setRatings(2)}>
                             <Text fontSize={20} fontWeight={500} color={"orange.500"}>
                                 2.0
                             </Text>
-
                             <Rating size="small" value={2} readOnly />
                         </MenuItem>
 
-                        <MenuItem
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent="space-around"
-                            onClick={() => setRatings(3)}
-                        >
+                        <MenuItem display={"flex"} alignItems={"center"} justifyContent="space-around" onClick={() => setRatings(3)}>
                             <Text fontSize={20} fontWeight={500} color={"orange.500"}>
                                 3.0
                             </Text>
-
                             <Rating size="small" value={3} readOnly />
                         </MenuItem>
 
-                        <MenuItem
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent="space-around"
-                            onClick={() => setRatings(4)}
-                        >
+                        <MenuItem display={"flex"} alignItems={"center"} justifyContent="space-around" onClick={() => setRatings(4)}>
                             <Text fontSize={20} fontWeight={500} color={"orange.500"}>
                                 4.0
                             </Text>
-
                             <Rating size="small" value={4} readOnly />
                         </MenuItem>
 
-                        <MenuItem
-                            display={"flex"}
-                            alignItems={"center"}
-                            justifyContent="space-around"
-                            onClick={() => setRatings(5)}
-                        >
+                        <MenuItem display={"flex"} alignItems={"center"} justifyContent="space-around" onClick={() => setRatings(5)}>
                             <Text fontSize={20} fontWeight={500} color={"orange.500"}>
                                 5.0
                             </Text>
-
                             <Rating size="small" value={5} readOnly />
                         </MenuItem>
                     </MenuList>
                 </Menu>
                 <BiChevronDown fontSize={25} />
+
+                <BiLogOut fontSize={25} />
             </Flex>
         </Flex>
     </Flex>
