@@ -1,19 +1,14 @@
 import { Flex, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { Rating } from '@material-ui/lab'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BiChevronDown, BiCurrentLocation, BiLogOut, BiSearch, BiStar } from 'react-icons/bi'
 import axios from 'axios'
-
-const url = "https://opentripmap-places-v1.p.rapidapi.com/en/places/geoname";
+import { useDispatch } from 'react-redux'
+import { actionLogoutAsync } from '../redux/actions/loginActions'
 
 const Header = ({ setRatings, setCoordinates }) => {
+    const dispatch = useDispatch()
     const [busqueda, setBusqueda] = useState("")
-
-    const handleLocation = () => {
-        // navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
-        //     setCoordinates({ lat: latitude, lon: longitude })
-        // })
-    }
 
     const handleInputChange = ({ target }) => {
         setBusqueda(target.value)
@@ -89,8 +84,16 @@ const Header = ({ setRatings, setCoordinates }) => {
                 cursor={"pointer"}
             >
                 <Menu>
-                    <BiCurrentLocation fontSize={25} onClick={handleLocation()} />
-                    <MenuButton mx={2} transitions={'all 0.2s'} borderRadius={'md'} onClick={handleLocation()}>
+                    <BiCurrentLocation fontSize={25} onClick={() =>
+                        navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+                            setCoordinates({ lat: latitude, lon: longitude })
+                        })
+                    } />
+                    <MenuButton mx={2} transitions={'all 0.2s'} borderRadius={'md'} onClick={() =>
+                        navigator.geolocation.getCurrentPosition(({ coords: { latitude, longitude } }) => {
+                            setCoordinates({ lat: latitude, lon: longitude })
+                        })
+                    }>
                         Track my Location
                     </MenuButton>
 
@@ -137,7 +140,9 @@ const Header = ({ setRatings, setCoordinates }) => {
                 </Menu>
                 <BiChevronDown fontSize={25} />
 
-                <BiLogOut fontSize={25} />
+                <BiLogOut fontSize={25}
+                    onClick={() => dispatch(actionLogoutAsync())}
+                />
             </Flex>
         </Flex>
     </Flex>

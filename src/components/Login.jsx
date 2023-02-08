@@ -1,37 +1,13 @@
 import React from 'react';
-import icong from '../assets/google.png'
-import { Boton, Input, SOCIAL } from '../styles/Global';
+import { Input } from '../styles/Global';
 import { useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useForm from '../hooks/useForm';
-import { actionLoginAsync, loginGoogle } from '../redux/actions/loginActions';
-import styled from 'styled-components';
-import background from '../assets/background.jpg'
-
-const BACK = styled.div`
-    background-image: url(${background});
-    background-size: cover;
-    background-repeat: no-repeat;
-    width: -webkit-fill-available;
-    height: -webkit-fill-available;
-    position: absolute;
-    z-index: 0;
-`
-const CONTENT = styled.div`
-    text-align: center;
-    position: absolute;
-    width: 40%;
-    z-index: 1;
-    height: 100%;
-    background-color: rgb(255 255 255 / 60%);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-`
+import { actionLoginAsync } from '../redux/actions/loginActions';
+import { FormControl, FormLabel, Flex, Button } from '@chakra-ui/react'
 
 const Login = () => {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
 
     const [formValue, handleChange, reset] = useForm({
         email: '',
@@ -46,29 +22,26 @@ const Login = () => {
         reset()
     }
 
-    return (
-        <>
-            <BACK></BACK>
-            <CONTENT>
-                <h1>Sign In</h1>
-                <form action="" onSubmit={handleSubmit}>
+    return <Flex justifyContent={"center"} alignItems={"center"} width={"100vw"} height={"100vh"} maxWidth={"100vw"} maxHeight={"100vh"} position={"relative"}
+        bgImage="url('https://www.teahub.io/photos/full/171-1718121_high-resolution-restaurant-images-hd.jpg')">
+        <Flex position="absolute" top="0" left="0" px={4} py={2} zIndex={101} direction={"column"} bg={"whiteAlpha.900"} width={"37vw"} height="100vh" justifyContent="center">
+            <FormControl my="auto">
+                <form onSubmit={handleSubmit}>
+                    <FormLabel>Email address</FormLabel>
                     <Input type="email" name="email" placeholder="Email" value={formValue.email} onChange={handleChange} style={{ marginBottom: "10px" }} />
+                    <FormLabel>Password</FormLabel>
                     <Input type="password" name="password" placeholder="Password" value={formValue.password} onChange={handleChange} style={{ marginBottom: "2rem" }} />
-                    <Boton>Sign In</Boton>
-                    <h6>¿Forgot your password?</h6>
+                    <Button colorScheme='teal' variant='solid' type='submit'>
+                        Sign In
+                    </Button>
                 </form>
-
-                <div>
-                    <h4>Sign in with</h4>
-                    <img src={icong} style={{ cursor: "pointer" }} alt="" onClick={() => dispatch(loginGoogle(), navigate('/home'))} />
-                </div>
-
-                <div>
-                    <span>Don't have an account?</span><span><Link to="/register"> Sign Up</Link></span>
-                </div>
-            </CONTENT>
-        </>
-    );
+            </FormControl>
+            <Flex>
+                <span>Don't have an account?</span>
+                <span><Link to="/signup"> Sign Up</Link></span>
+            </Flex>
+        </Flex>
+    </Flex>
 };
 
 export default Login;

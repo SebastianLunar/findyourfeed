@@ -40,7 +40,8 @@ const Home = () => {
     }, [ratings])
 
 
-    return <Flex justifyContent={"center"} alignItems={"center"} width={"100vw"} height={"100vh"} maxWidth={"100vw"} maxHeight={"100vh"} position={"relative"}>
+    return <Flex justifyContent={"center"} alignItems={"center"} width={"100vw"} height={"100vh"} maxWidth={"100vw"} maxHeight={"100vh"} position={"relative"}
+    bgImage="url('https://www.aviatur.com/source/contenidos/blog/gastronomia-al-viajar.jpg')" bgSize={"cover"}>
         <Header
             setCoordinates={setCoordinates}
             setRatings={setRatings}
