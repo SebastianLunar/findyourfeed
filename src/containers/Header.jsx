@@ -1,10 +1,39 @@
 import { Flex, Input, InputGroup, InputRightElement, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import { Rating } from '@material-ui/lab'
-import { Autocomplete } from '@react-google-maps/api'
-import React from 'react'
+import React, { useState } from 'react'
 import { BiChevronDown, BiSearch, BiStar } from 'react-icons/bi'
+import { GetCity } from '../helpers/GetCity'
+import axios from 'axios'
 
-const Header = ({ setType, setRatings, setCoordinates }) => {
+const url = "https://opentripmap-places-v1.p.rapidapi.com/en/places/geoname";
+
+const Header = ({ setRatings, setCoordinates }) => {
+    const [busqueda, setBusqueda] = useState("")
+
+    const handleInputChange = ({ target }) => {
+        setBusqueda(target.value)
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const options = {
+            method: 'GET',
+            url: 'https://opentripmap-places-v1.p.rapidapi.com/en/places/geoname',
+            params: { name: busqueda },
+            headers: {
+                'X-RapidAPI-Key': '8f44de0108msh5d779779a81ce47p16771bjsn2682715a0b03',
+                'X-RapidAPI-Host': 'opentripmap-places-v1.p.rapidapi.com'
+            }
+        };
+
+        axios.request(options).then(function ({data}) {
+            console.log(data);
+            setCoordinates({ lat: data.lat, lon: data.lon })
+        }).catch(function (error) {
+            console.error(error);
+        });
+    }
+
     return <Flex
         position="absolute"
         top="0"
@@ -15,7 +44,6 @@ const Header = ({ setType, setRatings, setCoordinates }) => {
         zIndex={101}
         justifyContent="space-between"
     >
-        {/* <Autocomplete> */}
         <InputGroup
             width={"35vw"}
             shadow="lg"
@@ -24,21 +52,22 @@ const Header = ({ setType, setRatings, setCoordinates }) => {
                 pointerEvents={"none"}
                 children={<BiSearch color='gray' fontSize={20} />}
             />
-
-            <Input
-                type="text"
-                placeholder="Search for"
-                variant={'filled'}
-                fontSize={18}
-                bg={'white'}
-                color={'gray.700'}
-                _hover={{ bg: 'whiteAlpha.800' }}
-                _focus={{ bg: 'whiteAlpha.800' }}
-                _placeholder={{ color: 'gray.700' }}
-            >
-            </Input>
+            <form onSubmit={handleSubmit}>
+                <Input
+                    type="text"
+                    placeholder="Search for"
+                    variant={'filled'}
+                    fontSize={18}
+                    bg={'white'}
+                    color={'gray.700'}
+                    _hover={{ bg: 'whiteAlpha.800' }}
+                    _focus={{ bg: 'whiteAlpha.800' }}
+                    _placeholder={{ color: 'gray.700' }}
+                    onChange={handleInputChange}
+                >
+                </Input>
+            </form>
         </InputGroup>
-        {/* </Autocomplete> */}
         <Flex
             alignItems={'center'}
             justifyContent={"center"}
